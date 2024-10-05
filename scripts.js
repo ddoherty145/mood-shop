@@ -34,6 +34,7 @@ for (let i =0; i < data.length; i += 1) {
     button.dataset.id =data[i].name
     //create a custom attribute called data-price
     button.dataset.price = data[i].price
+    button.className = 'add-to-cart'
     button.innerHTML = "Add to Cart"
     newDiv.appendChild(button)
 }
