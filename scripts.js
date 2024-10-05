@@ -1,6 +1,7 @@
 import data from './data.js'
 
 const itemsContainer = document.querySelector('#items')
+const cart = []
 
 // the length of our data detemines how manu time this loop goes around
 for (let i =0; i < data.length; i += 1) {
@@ -38,3 +39,13 @@ for (let i =0; i < data.length; i += 1) {
     button.innerHTML = "Add to Cart"
     newDiv.appendChild(button)
 }
+
+document.body.addEventListener('click', (e) => {
+    if (e.target.classList.contains('add-to-cart')) {
+        const itemName = e.target.dataset.id;
+        const itemPrice = e.target.dataset.price;
+
+        cart.push({ name: itemName, price: itemPrice});
+        console.log(`Added ${itemName} to cart for $${itemPrice}`)
+    }
+});
