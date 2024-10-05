@@ -43,9 +43,56 @@ for (let i =0; i < data.length; i += 1) {
 document.body.addEventListener('click', (e) => {
     if (e.target.classList.contains('add-to-cart')) {
         const itemName = e.target.dataset.id;
-        const itemPrice = e.target.dataset.price;
+        const itemPrice = parseFloat(e.target.dataset.price);
 
-        cart.push({ name: itemName, price: itemPrice});
-        console.log(`Added ${itemName} to cart for $${itemPrice}`)
+        // Check if item is already in the cart
+        const itemInCart = cart.find(item => item.name === itemName);
+        if (itemInCart) {
+            itemInCart.qty += 1;  // Increase quantity if item already exists
+        } else {
+            cart.push({ name: itemName, price: itemPrice, qty: 1 });
+        }
+
+        console.log(`Added ${itemName} to cart for $${itemPrice}`);
+        displayCart();
+    }
+
+    // Handle quantity increase
+    if (e.target.classList.contains('button-add')) {
+        const itemId = e.target.dataset.id;
+        const itemInCart = cart.find(item => item.name === itemId);
+        if (itemInCart) {
+            itemInCart.qty += 1;
+        }
+        displayCart();
+    }
+
+    // Handle quantity decrease
+    if (e.target.classList.contains('button-sub')) {
+        const itemId = e.target.dataset.id;
+        const itemInCart = cart.find(item => item.name === itemId);
+        if (itemInCart && itemInCart.qty > 1) {
+            itemInCart.qty -= 1;
+        }
+        displayCart();
     }
 });
+
+// Display the cart
+const displayCart = () => {
+    let cartStr = '';
+    for (let i = 0; i < cart.length; i += 1) {
+        const item = cart[i];
+        cartStr += `<li>
+            <span>${item.name}</span>
+            <input type="number" value="${item.qty}" class="input-qty" data-id="${item.name}">
+            <span>$${item.price}</span>
+            <span>$${(item.price * item.qty).toFixed(2)}</span>
+            <button class="button-add" data-id="${item.name}">+</button>
+            <button class="button-sub" data-id="${item.name}">-</button>
+        </li>`;
+    }
+
+    const cartItems = document.querySelector('#cart-items');
+    cartItems.innerHTML = cartStr;
+}
