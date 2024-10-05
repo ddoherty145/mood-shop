@@ -73,10 +73,13 @@ document.body.addEventListener('click', (e) => {
         const itemInCart = cart.find(item => item.name === itemId);
         if (itemInCart && itemInCart.qty > 1) {
             itemInCart.qty -= 1;
+        } else if (itemInCart && itemInCart.qty === 1) {
+            cart.splice(cart.indexOf(itemInCart), 1);
         }
         displayCart();
     }
 });
+
 
 // Display the cart
 const displayCart = () => {
