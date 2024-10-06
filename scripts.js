@@ -44,7 +44,6 @@ document.body.addEventListener('click', (e) => {
     if (e.target.classList.contains('add-to-cart')) {
         const itemName = e.target.dataset.id;
         const itemPrice = parseFloat(e.target.dataset.price);
-
         // Check if item is already in the cart
         const itemInCart = cart.find(item => item.name === itemName);
         if (itemInCart) {
@@ -52,12 +51,10 @@ document.body.addEventListener('click', (e) => {
         } else {
             cart.push({ name: itemName, price: itemPrice, qty: 1 });
         }
-
         console.log(`Added ${itemName} to cart for $${itemPrice}`);
         displayCart();
     }
-
-    // Handle quantity increase
+    // handle quantity increase
     if (e.target.classList.contains('button-add')) {
         const itemId = e.target.dataset.id;
         const itemInCart = cart.find(item => item.name === itemId);
@@ -66,8 +63,7 @@ document.body.addEventListener('click', (e) => {
         }
         displayCart();
     }
-
-    // Handle quantity decrease
+    // handle quantity decrease
     if (e.target.classList.contains('button-sub')) {
         const itemId = e.target.dataset.id;
         const itemInCart = cart.find(item => item.name === itemId);
@@ -79,9 +75,7 @@ document.body.addEventListener('click', (e) => {
         displayCart();
     }
 });
-
-
-// Display the cart
+// display the cart
 const displayCart = () => {
     let cartStr = '';
     for (let i = 0; i < cart.length; i += 1) {
@@ -97,5 +91,41 @@ const displayCart = () => {
     }
 
     const cartItems = document.querySelector('#cart-items');
-    cartItems.innerHTML = cartStr;
+        cartItems.innerHTML ='';
+        cartItems.innerHTML = cartStr;
+    
+}
+
+document.body.addEventListener('change', (e) => {
+    if (e.target.matches('.input-qty')) {
+        const name = e.target.dataset.id
+        const value = parseInt(e.target.value, 10)
+        updateCart(name, value)
+        displayCart()
+    }
+})
+
+document.body.addEventListener('keydown', (e) => {
+    if (e.target.matches('.input-qty')) {
+        if (e.key === "Enter") {
+            const name = e.target.dataset.id;
+            const value = parseInt(e.target.value);
+            updateCart(name, value);
+            console.log(e)
+            displayCart();
+        }
+    }
+});
+
+const updateCart = (id,val) => {
+    for (let i = 0; i < cart.length; i += 1) {
+        const item = cart[i]
+        if (id === item.id) {
+            item.qty = val
+         if (item.qty < 1) {
+            cart.splice(i, 1)
+         }
+         return
+        }
+    }
 }
