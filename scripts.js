@@ -77,6 +77,7 @@ document.body.addEventListener('click', (e) => {
 });
 // display the cart
 const displayCart = () => {
+    console.log(cart)
     let cartStr = '';
     for (let i = 0; i < cart.length; i += 1) {
         const item = cart[i];
@@ -89,6 +90,9 @@ const displayCart = () => {
             <button class="button-sub" data-id="${item.name}">-</button>
         </li>`;
     }
+    const cartTotal = getCartTotal()
+    // append a li tag at the end of the cartStr with the total
+    cartStr += `<li>Total: ${cartTotal}</li>`
 
     const cartItems = document.querySelector('#cart-items');
         cartItems.innerHTML ='';
@@ -129,3 +133,21 @@ const updateCart = (id,val) => {
         }
     }
 }
+
+const getCartTotal = () => {
+    let total = 0
+    for (let i = 0; i < cart.length; i += 1) {
+        const item = cart[i]
+        total += item.qty * item.price
+
+    }
+    return total.toFixed(2)
+}
+
+
+const theTotal = getCartTotal()
+console.log(theTotal)
+
+const answer = 10 / 3
+console.log(answer)
+console.log(answer.toFixed(2))
